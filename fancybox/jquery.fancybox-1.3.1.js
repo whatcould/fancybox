@@ -742,10 +742,10 @@
 			}
 
 			$('body').append(
-				tmp			= $('<div id="fancybox-tmp"></div>'),
-				loading		= $('<div id="fancybox-loading"><div></div></div>'),
-				overlay		= $('<div id="fancybox-overlay"></div>'),
-				wrap		= $('<div id="fancybox-wrap"></div>')
+				tmp			= $('<div id="fancybox-tmp" class="fncybox"></div>'),
+				loading		= $('<div id="fancybox-loading" class="fncybox"><div></div></div>'),
+				overlay		= $('<div id="fancybox-overlay" class="fncybox"></div>'),
+				wrap		= $('<div id="fancybox-wrap" class="fncybox"></div>')
 			);
 
 			if (!$.support.opacity) {
