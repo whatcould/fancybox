@@ -60,9 +60,7 @@ p {
   border: 1px solid #99a;
   background-color: #ccc;
 }
-#fancybox-inner:focus {
-    background: #99a;
-}
+
 a img {
 	border: 1px solid #BBB;
 	padding: 2px;	

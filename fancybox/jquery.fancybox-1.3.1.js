@@ -761,7 +761,7 @@
                 return;
             }
 
-            base_focusable_elements = $('a,input,button,select,textarea,iframe');
+            $.fancybox.update_base_elements();
 
             $('body').append(
                 tmp			= $('<div id="fancybox-tmp" class="fncybox"></div>'),
@@ -937,6 +937,10 @@
 		return;
 	};
 
+    $.fancybox.update_base_elements = function() {
+      base_focusable_elements = $('a,input,button,select,textarea,iframe').not('#fancybox-close,#fancybox-left,#fancybox-right');
+    };
+    
 	$.fancybox.cancel = function() {
 		if (busy) {
 			return;
