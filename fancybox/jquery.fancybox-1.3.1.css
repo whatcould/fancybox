@@ -338,6 +338,18 @@
 	background-position: -40px -122px;
 }
 
+/* Browsers with box-shadow support */
+
+.fancybox-box-shadow #fancybox-outer {
+    -moz-box-shadow: 0 0 20px #222;
+    -webkit-box-shadow: 0 0 20px #222;
+    box-shadow: 0 0 20px #222;
+}
+
+.fancybox-box-shadow .fancy-bg {
+    background: transparent!important;
+}
+
 /* IE */
 
 #fancybox-loading.fancybox-ie div	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='fancybox/fancy_loading.png', sizingMethod='scale'); }

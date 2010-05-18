@@ -710,7 +710,32 @@
 
 			loadingFrame = (loadingFrame + 1) % 12;
 		},
+        
+        /* culled from Modernizr */
+        fancybox_test_props_all = function( prop, callback ) {
+            var uc_prop = prop.charAt(0).toUpperCase() + prop.substr(1),
+            props = [
+                prop,
+                'webkit' + uc_prop,
+                'Moz' + uc_prop,
+                'moz' + uc_prop,
+                'o' + uc_prop,
+                'ms' + uc_prop
+            ];
 
+            return !!fancybox_test_props( props, callback );
+        },
+
+        fancybox_test_props = function( props, callback ) {
+            var m = document.createElement( 'modernizr' ), m_style = m.style;
+
+            for ( var i in props ) {
+                if ( m_style[ props[i] ] !== undefined && ( !callback || callback( props[i] ) ) ) {
+                    return true;
+                }
+            }
+        },
+        
 		fancybox_init = function() {
 			if ($("#fancybox-wrap").length) {
 				return;
@@ -752,7 +777,11 @@
 				e.preventDefault();
 				$.fancybox.next();
 			});
-
+            
+            if(fancybox_test_props_all( 'boxShadow' )) {
+                wrap.addClass('fancybox-box-shadow');
+            }
+            
 			if (isIE6) {
 				overlay.get(0).style.setExpression('height',	"document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + 'px'");
 				loading.get(0).style.setExpression('top',		"(-20 + (document.documentElement.clientHeight ? document.documentElement.clientHeight/2 : document.body.clientHeight/2 ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop )) + 'px'");
