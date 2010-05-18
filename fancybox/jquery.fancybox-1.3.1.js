@@ -16,7 +16,7 @@
 
 (function($) {
 
-	var tmp, loading, overlay, wrap, outer, inner, close, nav_left, nav_right,
+	var tmp, loading, overlay, wrap, outer, inner, close, nav_left, nav_right, base_focusable_elements, target_bookmark,
 
 		selectedIndex = 0, selectedOpts = {}, selectedArray = [], currentIndex = 0, currentOpts = {}, currentArray = [],
 
@@ -169,7 +169,23 @@
 			}
 
 			$('#fancybox-title').appendTo( outer ).hide();
-		},
+        },
+
+        fancybox_disable_base_elements = function() {
+            base_focusable_elements.each(function(){
+                var el = $(this);
+                prev_tabindex = el.attr('tabindex');
+                el.data('prev-tabindex',prev_tabindex);
+                el.attr('tabindex','-1');
+            });
+        },
+        fancybox_enable_base_elements = function() {
+            base_focusable_elements.each(function(){
+                var el = $(this);
+                el.data('prev-tabindex');
+                el.attr('tabindex',el.data('prev-tabindex'));
+            });
+        },
 
 		fancybox_set_navigation = function() {
 			$(document).unbind('keydown.fb').bind('keydown.fb', function(e) {
@@ -271,6 +287,8 @@
 			} else {
 				$(window).unbind("scroll.fb");
 			}
+
+		    fancybox_disable_base_elements();
 
 			setTimeout(function() { inner.attr('tabindex','0'); inner.focus();}, 5); // accessibility
 
@@ -738,17 +756,19 @@
             }
         },
         
-		fancybox_init = function() {
-			if ($("#fancybox-wrap").length) {
-				return;
-			}
+        fancybox_init = function() {
+            if ($("#fancybox-wrap").length) {
+                return;
+            }
 
-			$('body').append(
-				tmp			= $('<div id="fancybox-tmp" class="fncybox"></div>'),
-				loading		= $('<div id="fancybox-loading" class="fncybox"><div></div></div>'),
-				overlay		= $('<div id="fancybox-overlay" class="fncybox"></div>'),
-				wrap		= $('<div id="fancybox-wrap" class="fncybox"></div>')
-			);
+            base_focusable_elements = $('a,input,button,select,textarea,iframe');
+
+            $('body').append(
+                tmp			= $('<div id="fancybox-tmp" class="fncybox"></div>'),
+                loading		= $('<div id="fancybox-loading" class="fncybox"><div></div></div>'),
+                overlay		= $('<div id="fancybox-overlay" class="fncybox"></div>'),
+                wrap		= $('<div id="fancybox-wrap" class="fncybox"></div>')
+            );
 
 			if (!$.support.opacity) {
 				wrap.addClass('fancybox-ie');
@@ -801,6 +821,7 @@
 			.data('fancybox', $.extend({}, options, ($.metadata ? $(this).metadata() : {})))
 			.unbind('click.fb').bind('click.fb', function(e) {
 				e.preventDefault();
+				var target = $(this);
 
 				if (busy) {
 					return;
@@ -808,12 +829,13 @@
 
 				busy = true;
 
-				$(this).blur();
+				target.blur();
+				target_bookmark = target;
 
 				selectedArray	= [];
 				selectedIndex	= 0;
 
-				var rel = $(this).attr('rel') || '';
+				var rel = target.attr('rel') || '';
 
 				if (!rel || rel == '' || rel === 'nofollow') {
 					selectedArray.push(this);
@@ -967,6 +989,14 @@
 			$.event.trigger('fancybox-cleanup');
 
 			inner.empty().attr('tabindex','-1');
+
+			fancybox_enable_base_elements();
+
+			try{
+				target_bookmark.focus();
+			} catch (er){
+				// empty
+			}
 
 			if ($.isFunction(currentOpts.onClosed)) {
 				currentOpts.onClosed(currentArray, currentIndex, currentOpts);
