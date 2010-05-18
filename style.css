@@ -53,10 +53,16 @@ p {
 	padding-bottom: 14px;
 }
 
-a {
-	outline: none;	
+.image_examples a:focus {
+  outline: none;
 }
-
+.image_examples a:focus img {
+  border: 1px solid #99a;
+  background-color: #ccc;
+}
+#fancybox-inner:focus {
+    background: #99a;
+}
 a img {
 	border: 1px solid #BBB;
 	padding: 2px;	

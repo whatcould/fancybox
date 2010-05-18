@@ -272,6 +272,8 @@
 				$(window).unbind("scroll.fb");
 			}
 
+			setTimeout(function() { inner.attr('tabindex','0'); inner.focus();}, 5); // accessibility
+
 			if ($.isFunction(currentOpts.onComplete)) {
 				currentOpts.onComplete(currentArray, currentIndex, currentOpts);
 			}
@@ -758,8 +760,8 @@
 				.appendTo( wrap );
 
 			outer.append(
-				inner		= $('<div id="fancybox-inner"></div>'),
-				close		= $('<a id="fancybox-close"></a>'),
+				inner		= $('<div id="fancybox-inner" tabindex="-1"></div>'),
+				close		= $('<a id="fancybox-close" href="#"></a>'),
 
 				nav_left	= $('<a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a>'),
 				nav_right	= $('<a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a>')
@@ -964,7 +966,7 @@
 
 			$.event.trigger('fancybox-cleanup');
 
-			inner.empty();
+			inner.empty().attr('tabindex','-1');
 
 			if ($.isFunction(currentOpts.onClosed)) {
 				currentOpts.onClosed(currentArray, currentIndex, currentOpts);
@@ -1007,6 +1009,7 @@
 		} else {
 			wrap.fadeOut( currentOpts.transitionOut == 'none' ? 0 : currentOpts.speedOut, _cleanup);
 		}
+		return false;
 	};
 
 	$.fancybox.resize = function() {
