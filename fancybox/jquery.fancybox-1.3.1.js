@@ -781,7 +781,7 @@
 
 			outer.append(
 				inner		= $('<div id="fancybox-inner" tabindex="-1"></div>'),
-				close		= $('<a id="fancybox-close" href="#"></a>'),
+				close		= $('<a id="fancybox-close" href="#">Close</a>'),
 
 				nav_left	= $('<a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a>'),
 				nav_right	= $('<a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a>')
